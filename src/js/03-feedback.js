@@ -6,17 +6,18 @@ const refs = {
 };
 const FORM_KEY = 'feedback-form-state';
 const formData = {};
-localStorage.setItem(FORM_KEY, JSON.stringify(formData));
-
-refs.form.addEventListener('input', throttle(500, onFormInput));
 
 refs.form.addEventListener('submit', onSubmitForm);
+
+refs.form.addEventListener('input', throttle(500, onFormInput));
 popularInput();
 
 function onSubmitForm(e) {
   e.preventDefault();
-  console.log(`email : ${JSON.parse(localStorage.getItem(FORM_KEY)).email}`);
-  console.log(`message : ${JSON.parse(localStorage.getItem(FORM_KEY)).message}`);
+  if (JSON.parse(localStorage.getItem(FORM_KEY)) !== null) {
+    console.log(`email : ${JSON.parse(localStorage.getItem(FORM_KEY)).email}`);
+    console.log(`message : ${JSON.parse(localStorage.getItem(FORM_KEY)).message}`);
+  }
 
   e.target.reset();
   localStorage.removeItem(FORM_KEY);
@@ -29,6 +30,7 @@ function onFormInput(e) {
 function popularInput() {
   const savedFormKey = localStorage.getItem(FORM_KEY);
   const parsedFormKey = JSON.parse(savedFormKey);
+  if (parsedFormKey === null) return;
   if (parsedFormKey.message) {
     refs.coment.value = parsedFormKey.message;
   }
