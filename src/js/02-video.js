@@ -8,5 +8,12 @@ player.on(
     });
   }, 1000),
 );
-
-player.setCurrentTime(localStorage.getItem('videoplayer-current-time'));
+setTime();
+function setTime() {
+  const time = localStorage.getItem('videoplayer-current-time');
+  if (time) {
+    player.setCurrentTime(time);
+    localStorage.removeItem('videoplayer-current-time');
+  }
+}
+window.addEventListener('DOMContentLoaded', setTime);
